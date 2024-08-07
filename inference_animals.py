@@ -37,6 +37,9 @@ def main():
     tyro.extras.set_accent_color("bright_cyan")
     args = tyro.cli(ArgumentConfig)
 
+    # set base path
+    os.chdir(args.base_path)
+
     ffmpeg_dir = os.path.join(os.getcwd(), "ffmpeg")
     if osp.exists(ffmpeg_dir):
         os.environ["PATH"] += (os.pathsep + ffmpeg_dir)
