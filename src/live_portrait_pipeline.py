@@ -372,6 +372,9 @@ class LivePortraitPipeline(object):
                 I_p_pstbk_lst.append(I_p_pstbk)
 
         if args.output_path is not None:
+            if not os.path.exists(args.output_dir):
+                mkdir(args.output_dir)
+            
             flag_source_has_audio = flag_is_source_video and has_audio_stream(args.source)
             flag_driving_has_audio = (not flag_load_from_template) and has_audio_stream(args.driving)
             
@@ -387,12 +390,11 @@ class LivePortraitPipeline(object):
             ######### build the final result #########
             if flag_source_has_audio or flag_driving_has_audio:
                 wfp_with_audio = osp.join(args.output_dir, f'{basename(args.source)}--{basename(args.driving)}_with_audio.mp4')
-                # audio_from_which_video = args.source if flag_source_has_audio else args.driving # default source audio
-                audio_from_which_video = args.driving if flag_driving_has_audio else args.source # default driving audio
+                audio_from_which_video = args.driving if ((flag_driving_has_audio and args.audio_priority == 'driving') or (not flag_source_has_audio)) else args.source
                 log(f"Audio is selected from {audio_from_which_video}")
                 add_audio_to_video(args.output_path, audio_from_which_video, wfp_with_audio)
                 os.replace(wfp_with_audio, args.output_path)
-                log(f"Replace {args.output_path} with {wfp_with_audio}")
+                log(f"Replace {wfp_with_audio} with {args.output_path}")
 
             # final log
             if wfp_template not in (None, ''):
