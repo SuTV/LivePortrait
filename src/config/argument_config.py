@@ -17,7 +17,7 @@ class ArgumentConfig(PrintableConfig):
     driving:  Annotated[str, tyro.conf.arg(aliases=["-d"])] = make_abs_path('../../assets/examples/driving/d0.mp4')  # path to driving video or template (.pkl format)
     output_dir: Annotated[str, tyro.conf.arg(aliases=["-o"])] = 'animations/'  # directory to save output video
     output_path: Annotated[str, tyro.conf.arg(aliases=["-op"])] = make_abs_path('../../animations/video.mp4') # directory path to save output video
-    base_path: Annotated[str, tyro.conf.arg(aliases=["-bp"])]
+    base_path: Annotated[str, tyro.conf.arg(aliases=["-bp"])] = None
 
     ########## inference arguments ##########
     flag_use_half_precision: bool = True  # whether to use half precision (FP16). If black boxes appear, it might be due to GPU incompatibility; set to False.
